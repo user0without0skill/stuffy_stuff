@@ -1,6 +1,7 @@
 #include "stdio.h"
 
 int main(void){
-    printf("im ded \n");
+    int a = 15;
+    printf(a);
     return 0;
 }
