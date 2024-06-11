@@ -1,7 +1,11 @@
 #include "stdio.h"
 
+void generation (int array[]){
+    printf("%d", sizeof(array));
+}
+
 int main(void){
-    int a = 15;
-    printf(a);
-    return 0;
+    int field[27];
+    generation(field);
+
 }
