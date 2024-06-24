@@ -1,13 +1,9 @@
 #include "stdio.h"
 #include "stdlib.h"
 
-void generation (int size);
+float *generation (int size);
 
 int scanning ();
-
-void autogame(int size);
-
-void game(int turn);
 
 int main(void){
     int size;
@@ -19,36 +15,24 @@ int main(void){
             break;
         }
     }
-    generation(size);
+    float *map = generation(size);
+    free(map);
 
     return 0;
 }
 
-void generation (int size) {
-    int array[size], difficulty;
-    array[size -1] = 1;
-
-    printf("generating nothing \n");
-    printf("array size: %d \n", size);
-    printf("Choose game difficulty from 0 to 3: \n")
-
-    scanf("%d", difficulty);
-    switch (difficulty) {
-      case 0:
-        printf("Auto game enabled\n");
-        autogame(size);
-        break
-      case 1:
-        printf("Plains enabled\n"); 
-        break;
-      case 2:
-        printf("Hills enabled\n");
-        break;
-      case 3:
-        printf("Dessert enabled\n");
-        break;
-    } 
+float *generation (int size) {
+  int i=0;
+  float *array = malloc(size);
+  printf("generating nothing \n");
+  printf("array size: %d \n", size);
+  while(i !=size) {
+      array[(int)i] = ((float)rand()/(float)(RAND_MAX)) * 1;
+      i++;
+  }
+  return array;
 }
+
 
 int scanning () {
     int size;
@@ -62,9 +46,4 @@ int scanning () {
         return size;
     }
     return 0;
-}
-
-void autogame(int size) {
-  printf("You win \n");
-  printf("Score: %d\n");
 }
