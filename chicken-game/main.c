@@ -1,49 +1,85 @@
-#include "stdio.h"
-#include "stdlib.h"
+/* Todo list:
+ * ✅ Add diffuculty ✅
+ * ✅ Add Farmer ✅
+ * ✅ Add Chicken ✅  ❌(player) ❌ 
+ * ✅ Make normal generation (Generation of house, field, bushes) ✅
+ * Game full turns system
+ * Final score 
+ * Make Interface on opengl 
+ */
 
-float *generation (int size);
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+#define len(array) = sizeof(array)/sizeof(array[0]); 
 
-int scanning ();
+int scanning (char *condition, int minimal_size);
+
+void game(int size);
+
+int *game_turn(int size); 
 
 int main(void){
-    int size;
-    printf("size of array:  \n");
-    while (1)
-    {
-        size = scanning();
-        if (size != 0) {
-            break;
-        }
-    }
-    float *map = generation(size);
-    free(map);
-
-    return 0;
+  int size; 
+  size = scanning("Size of area: \n", 3);  
+  game(size);
 }
 
-float *generation (int size) {
-  int i=0;
-  float *array = malloc(size);
-  printf("generating nothing \n");
-  printf("array size: %d \n", size);
-  while(i !=size) {
-      array[(int)i] = ((float)rand()/(float)(RAND_MAX)) * 1;
-      i++;
-  }
-  return array;
-}
-
-
-int scanning () {
+int scanning (char *condition, int minimal_size) {
     int size;
+    /*Making loop that will check if index isn't lower that certain number */
+    printf("%s \n", condition);
     scanf("%d", &size);
-    if (size <   3) {
-        printf("Make size bigger \n");
-        printf("Or exit by pressing: ctrl + c \n");
-    }
+    /* Here is the check, i want to make sure that map isn't smaller that three */
+    if (size <  minimal_size) {
+          printf("Make size bigger \n");
+          printf("Or exit by pressing: ctrl + c \n");
+          scanning(condition, minimal_size);
+        }
     else {
-        printf("ok \n");
-        return size;
+      printf("ok \n");
+      return size;
     }
-    return 0;
+    
+    return 0; 
+}
+    
+
+
+/*Chicken and Farmer logic  */
+int *game_turn(int size) {
+  /* List of turns  */
+  int *turns = malloc(size);
+  for (int i; i <= size ;i++) {
+    turns[i] = rand() % size;
+  }
+  return turns;
+}
+
+void game(int size) {
+  int game_rounds, *farmer, *chicken, farmer_score=0, chicken_score=0; 
+  
+  game_rounds = scanning("Amount of rounds: \n", 0);
+    
+  int i = 0; 
+  
+  while (i < game_rounds) {     
+    /*Comparing 2 arrays to get equal results, if not found chicken get score */
+    /*Else farmer */
+    chicken = game_turn(size);
+    farmer = game_turn(size); 
+    for(int x; x < size; x++) {
+      if (chicken[x] != farmer[x]) {
+        farmer_score++;
+      } else {
+        chicken_score++; } 
+    }
+    i++;
+  }
+  if (chicken_score > farmer_score) { 
+    printf("Chicken won! \n");
+  }
+  else {
+    printf("Farmer won! \n");
+  }
 }
